@@ -1,23 +1,22 @@
 import { StatusBar } from "expo-status-bar";
 import React from "react";
 import { StyleSheet,Text, View } from "react-native";
+import { NativeRouter, Route, Routes } from "react-router-native";
+import Home from "./Conponent/Home/Home";
 import Task from "./Conponent/Task";
-import Todo from "./Conponent/Todo";
+import TodoList from "./Conponent/TodoList";
+
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <View style={styles.taskWrapper}>
-        <Text style={styles.sectionTitle}>Todays Task</Text>
-        <View style={styles.items}>
-          {/* task here */}
-          <Task Text = "task1"></Task>
-          <Task Text = "task1"></Task>
-          <Task Text = "task1"></Task>
-          <Task Text = "task1"></Task>
-        </View>
+      <NativeRouter>
+        <Routes>
+          <Route path="/" element={<Home/>}></Route>
         
-      </View>
+          <Route path="/todoList" element={<TodoList></TodoList>}></Route>
+        </Routes>
+      </NativeRouter>
     </View>
   );
 }
@@ -28,19 +27,5 @@ const styles = StyleSheet.create({
     backgroundColor: "#091334",
     //backgroundColor: "#7993EB",
     
-  },
-  taskWrapper: {
-    padding: 88,
-    paddingHorizontal: 20,
-  },
-  sectionTitle: {
-    color: "white",
-    fontSize:24,
-    fontWeight:'bold',
-    padding:20,
-    
-  },
-  items: {
-    marginTop:30
-  },
+  }
 });
