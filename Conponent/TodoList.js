@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Keyboard,
   Alert,
+  ScrollView,
 } from "react-native";
 import { keyboardProps } from "react-native-web/dist/cjs/modules/forwardedProps";
 import { Link } from "react-router-native";
@@ -52,18 +53,6 @@ export default function TodoList() {
           <Text style={styles.sectionTitle}>back</Text>
         </Link>
       </View>
-      <View style={styles.items}>
-        {/* task here */}
-        {todoList.map((item, index) => {
-          return (
-            <TouchableOpacity key={index} onPress={() => completeTask(index)}>
-              <Task Text={item}></Task>
-            </TouchableOpacity>
-          );
-        })}
-
-        <Task Text="task1"></Task>
-      </View>
       {/* typing to add task */}
       <KeyboardAvoidingView
         behavior={Platform.OS === "android" ? "padding" : "height"}
@@ -81,6 +70,21 @@ export default function TodoList() {
           </View>
         </TouchableOpacity>
       </KeyboardAvoidingView>
+      <ScrollView style={styles.itemScroll}>
+        <View style={styles.items}>
+          {/* task here */}
+
+          {todoList.map((item, index) => {
+            return (
+              <TouchableOpacity key={index} onPress={() => completeTask(index)}>
+                <Task Text={item}></Task>
+              </TouchableOpacity>
+            );
+          })}
+
+          <Task Text="task1"></Task>
+        </View>
+      </ScrollView>
     </View>
   );
 }
@@ -98,13 +102,16 @@ const styles = StyleSheet.create({
   items: {
     marginTop: 30,
   },
+  itemScroll: {
+    flexGrow: 1,
+  },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
   },
   writeTaskWrapper: {
-    position: "absolute",
-    bottom: "-110%",
+    position: "relative",
+    bottom: 0,
     width: "100%",
     flexDirection: "row",
     justifyContent: "space-between",
@@ -130,7 +137,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   addText: {
-    color:'white',
-    fontSize:30
+    color: "white",
+    fontWeight: "700",
   },
 });
