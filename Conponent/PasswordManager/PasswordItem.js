@@ -1,10 +1,11 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 
-export default function NoteItem(props) {
+export default function PasswordItem(props) {
   return (
     <View style={styles.item}>
       <View style={styles.itemLeft}>
+        
         <Text style={styles.itemText}>{props.Text}...</Text>
       </View>
     </View>
@@ -19,7 +20,7 @@ const styles = StyleSheet.create({
     
     
     height:150,
-    maxWidth:100
+    maxWidth:'100%'
   },
   
   round: {

@@ -15,13 +15,13 @@ import { Link } from "react-router-native";
 import NoteItem from "./NoteItem";
 
 export default function Notes() {
-  const [task, setTask] = useState();
-  const [todoList, setToDoList] = useState([]);
+  const [note, setNote] = useState();
+  const [noteList, setNoteList] = useState([]);
 
   const addToDoHandler = () => {
     Keyboard.dismiss();
-    setToDoList([...todoList, task]);
-    setTask(null);
+    setNoteList([...noteList, note]);
+    setNote(null);
   };
   //  delete note when completed
   const deleteNote = (index) => {
@@ -36,9 +36,9 @@ export default function Notes() {
         {
           text: "Yes",
           onPress: () => {
-            let todoListCopy = [...todoList];
-            todoListCopy.splice(index, 1);
-            setToDoList(todoListCopy);
+            let NoteListCopy = [...noteList];
+            NoteListCopy.splice(index, 1);
+            setNoteList(NoteListCopy);
           },
         },
       ]
@@ -63,9 +63,9 @@ export default function Notes() {
       >
         <TextInput
           style={styles.input}
-          placeholder={"+ Add ToDo"}
-          value={task}
-          onChangeText={(text) => setTask(text)}
+          placeholder={"Type here!"}
+          value={note}
+          onChangeText={(text) => setNote(text)}
         ></TextInput>
         <TouchableOpacity 
         onPress={addToDoHandler}
@@ -78,7 +78,7 @@ export default function Notes() {
       <ScrollView style={styles.itemsScroll}>
         <View style={styles.items}>
           {/* task here */}
-          {todoList.map((item, index) => {
+          {noteList.map((item, index) => {
             return (
               <TouchableOpacity key={index} 
               onLongPress={() => deleteNote(index)}
