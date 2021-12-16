@@ -10,8 +10,8 @@ import {
   Alert,
   ScrollView,
 } from "react-native";
-import { keyboardProps } from "react-native-web/dist/cjs/modules/forwardedProps";
 import { Link } from "react-router-native";
+
 import PasswordItem from "./PasswordItem";
 
 export default function PasswordManager() {

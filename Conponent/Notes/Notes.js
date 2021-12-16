@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -17,17 +17,49 @@ import NoteItem from "./NoteItem";
 export default function Notes() {
   const [note, setNote] = useState();
   const [noteList, setNoteList] = useState([]);
+  const [update, setUpdate] = useState(false);
 
-  const addToDoHandler = () => {
+  // load notes
+  useEffect(() => {
+    fetch("https://cryptic-falls-87009.herokuapp.com/notes")
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        setNoteList(data);
+      })
+      .catch((error) => {
+        alert(error.message);
+      });
+  }, [update]);
+
+  const addNotesHandler = () => {
+    setUpdate(false);
     Keyboard.dismiss();
-    setNoteList([...noteList, note]);
+    const data = {note}
+    console.log(data);
+    fetch("https://cryptic-falls-87009.herokuapp.com/notes", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.insertedId) {
+          Alert.alert("Success", "Notes Added", [
+            { text: "OK", onPress: () => setUpdate(true) },
+          ]);
+        }
+      });
     setNote(null);
   };
-  //  delete note when completed
-  const deleteNote = (index) => {
+  //  delete note 
+  const deleteNote = (id) => {
+    setUpdate(false);
     Alert.alert(
-      "Remove Note!",
-      "Do you want to delete the Note?",
+      "Mark as done!",
+      "Do you want to delete the task from the list?",
       [
         {
           text: "No",
@@ -36,9 +68,20 @@ export default function Notes() {
         {
           text: "Yes",
           onPress: () => {
-            let NoteListCopy = [...noteList];
-            NoteListCopy.splice(index, 1);
-            setNoteList(NoteListCopy);
+            const url = `https://cryptic-falls-87009.herokuapp.com/notes/${id}`;
+            fetch(url, {
+              method: "DELETE",
+            })
+              .then((res) => res.json())
+              .then((data) => {
+                if (data.deletedCount > 0) {
+                  Alert.alert("Success", "Note Deleted", [
+                    { text: "OK", onPress: () => setUpdate(true) },
+                  ]);
+                }else{
+                  console.log('nope')
+                }
+              });
           },
         },
       ]
@@ -68,7 +111,7 @@ export default function Notes() {
           onChangeText={(text) => setNote(text)}
         ></TextInput>
         <TouchableOpacity 
-        onPress={addToDoHandler}
+        onPress={addNotesHandler}
         >
           <View style={styles.addWrapper}>
             <Text style={styles.addText}>+</Text>
@@ -78,13 +121,13 @@ export default function Notes() {
       <ScrollView style={styles.itemsScroll}>
         <View style={styles.items}>
           {/* task here */}
-          {noteList.map((item, index) => {
+          {noteList.map((item) => {
             return (
-              <TouchableOpacity key={index} 
-              onLongPress={() => deleteNote(index)}
-              onPress={() =>viewDoc(index)}
+              <TouchableOpacity key={item._id} 
+              onLongPress={() => deleteNote(item._id)}
+              onPress={() =>viewDoc(item._id)}
               >
-                <NoteItem Text={item}></NoteItem>
+                <NoteItem Text={item.note}></NoteItem>
               </TouchableOpacity>
             );
           })}

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -10,21 +10,54 @@ import {
   Alert,
   ScrollView,
 } from "react-native";
-import { keyboardProps } from "react-native-web/dist/cjs/modules/forwardedProps";
+
 import { Link } from "react-router-native";
 import Task from "./Task";
 
 export default function TodoList() {
-  const [task, setTask] = useState();
+  const [task, setTask] = useState("");
   const [todoList, setToDoList] = useState([]);
+  const [update, setUpdate] = useState(false);
 
+  // load todolist
+  useEffect(() => {
+    fetch("https://cryptic-falls-87009.herokuapp.com/todo")
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        setToDoList(data);
+      })
+      .catch((error) => {
+        alert(error.message);
+      });
+  }, [update]);
+  // add new task to DB
   const addToDoHandler = () => {
+    setUpdate(false)
     Keyboard.dismiss();
-    setToDoList([...todoList, task]);
+    const data = {task}
+    console.log(data);
+    fetch("https://cryptic-falls-87009.herokuapp.com/todo", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.insertedId) {
+          Alert.alert("Success", "Todo Added", [
+            { text: "OK", onPress: () => setUpdate(true) },
+          ]);
+        }
+      });
+
     setTask(null);
   };
   //  delete task when completed
-  const completeTask = (index) => {
+  const completeTask = (id) => {
+    setUpdate(false);
     Alert.alert(
       "Mark as done!",
       "Do you want to delete the task from the list?",
@@ -36,9 +69,20 @@ export default function TodoList() {
         {
           text: "Yes",
           onPress: () => {
-            let todoListCopy = [...todoList];
-            todoListCopy.splice(index, 1);
-            setToDoList(todoListCopy);
+            const url = `https://cryptic-falls-87009.herokuapp.com/todo/${id}`;
+            fetch(url, {
+              method: "DELETE",
+            })
+              .then((res) => res.json())
+              .then((data) => {
+                if (data.deletedCount > 0) {
+                  Alert.alert("Success", "Todo Deleted", [
+                    { text: "OK", onPress: () => setUpdate(true) },
+                  ]);
+                }else{
+                  console.log('nope')
+                }
+              });
           },
         },
       ]
@@ -74,15 +118,16 @@ export default function TodoList() {
         <View style={styles.items}>
           {/* task here */}
 
-          {todoList.map((item, index) => {
+          {todoList.map((item) => {
             return (
-              <TouchableOpacity key={index} onPress={() => completeTask(index)}>
-                <Task Text={item}></Task>
+              <TouchableOpacity
+                key={item._id}
+                onPress={() => completeTask(item._id)}
+              >
+                <Task Text={item.task}></Task>
               </TouchableOpacity>
             );
           })}
-
-          <Task Text="task1"></Task>
         </View>
       </ScrollView>
     </View>
