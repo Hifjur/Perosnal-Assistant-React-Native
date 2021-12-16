@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { auth } from "../../firebase";
+
+//import {registerUser} from '../Hooks/useFirebase';
 import {
   KeyboardAvoidingView,
   StyleSheet,
@@ -9,21 +10,18 @@ import {
   View,
 } from "react-native";
 
+
+
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  export const handleRegister = () => {
-    auth.createUserWithEmailAndPassword(email, password)
-    .then(userCredentials => {
-        const user = userCredentials.user;
-        console.log(user.email);
-    })
-    .catch( error => alert(error.message));
+  const handleRegister = () => {
+    //registerUser(email, password)
   };
 
   return (
-    <KeyboardAvoidingView style={styles.container} behavior="padding">
+    <KeyboardAvoidingView style={styles.container} >
       <Text style={styles.header}>Personal Assistant</Text>
       <View style={styles.inputsContainer}>
         <TextInput
@@ -43,7 +41,10 @@ const Login = () => {
           <TouchableOpacity onPress={() => {}} style={styles.button}>
             <Text style={styles.buttonText}>Login</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => {}} style={styles.buttonRegister}>
+          <TouchableOpacity
+            onPress={handleRegister}
+            style={styles.buttonRegister}
+          >
             <Text style={styles.buttonOutlineText}>Register</Text>
           </TouchableOpacity>
         </View>

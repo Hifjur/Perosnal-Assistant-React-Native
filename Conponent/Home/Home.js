@@ -18,16 +18,19 @@ export default function Home() {
           <Link to="/todoList">
             <Text style={styles.nav}>Todo List</Text>
           </Link>
-          <Link to="/todoList">
-            <Text style={styles.nav}>Todo List</Text>
+          <Link to="/passwordManager">
+            <Text style={styles.nav}>Password Manager</Text>
           </Link>
         </View>
         <View style={styles.tiles}>
-          <Link to="/todoList">
-            <Text style={styles.nav}>Todo List</Text>
+          <Link to="/notes">
+            <Text style={styles.nav}>Notes</Text>
           </Link>
           <Link to="/todoList">
             <Text style={styles.nav}>Todo List</Text>
+          </Link>
+          <Link to="/login">
+            <Text style={styles.nav}>login</Text>
           </Link>
         </View>
       </View>
@@ -43,11 +46,14 @@ const styles = StyleSheet.create({
   nav: {
     color: "white",
     width: "100%",
+    height:120,
     textAlign: "center",
     padding: "18%",
     backgroundColor: "limegreen",
     margin: 5,
     borderRadius: 5,
+    fontSize:15,
+    fontWeight:'bold'
   },
   tiles: {
     flex: 1,

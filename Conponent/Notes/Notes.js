@@ -8,12 +8,13 @@ import {
   TouchableOpacity,
   Keyboard,
   Alert,
+  ScrollView,
 } from "react-native";
 import { keyboardProps } from "react-native-web/dist/cjs/modules/forwardedProps";
 import { Link } from "react-router-native";
-import Task from "./Task";
+import NoteItem from "./NoteItem";
 
-export default function TodoList() {
+export default function Notes() {
   const [task, setTask] = useState();
   const [todoList, setToDoList] = useState([]);
 
@@ -22,11 +23,11 @@ export default function TodoList() {
     setToDoList([...todoList, task]);
     setTask(null);
   };
-  //  delete task when completed
-  const completeTask = (index) => {
+  //  delete note when completed
+  const deleteNote = (index) => {
     Alert.alert(
-      "Mark as done!",
-      "Do you want to delete the task from the list?",
+      "Remove Note!",
+      "Do you want to delete the Note?",
       [
         {
           text: "No",
@@ -44,27 +45,18 @@ export default function TodoList() {
     );
   };
 
+  const viewDoc =(index) =>{
+    
+  }
+
   return (
     <View style={styles.taskWrapper}>
       <View style={styles.header}>
-        <Text style={styles.sectionTitle}>Todays Task</Text>
+        <Text style={styles.sectionTitle}>Notes</Text>
         <Link to="/">
           <Text style={styles.sectionTitle}>back</Text>
         </Link>
       </View>
-      <View style={styles.items}>
-        {/* task here */}
-        {todoList.map((item, index) => {
-          return (
-            <TouchableOpacity key={index} onPress={() => completeTask(index)}>
-              <Task Text={item}></Task>
-            </TouchableOpacity>
-          );
-        })}
-
-        <Task Text="task1"></Task>
-      </View>
-      {/* typing to add task */}
       <KeyboardAvoidingView
         behavior={Platform.OS === "android" ? "padding" : "height"}
         style={styles.writeTaskWrapper}
@@ -75,12 +67,31 @@ export default function TodoList() {
           value={task}
           onChangeText={(text) => setTask(text)}
         ></TextInput>
-        <TouchableOpacity onPress={addToDoHandler}>
+        <TouchableOpacity 
+        onPress={addToDoHandler}
+        >
           <View style={styles.addWrapper}>
             <Text style={styles.addText}>+</Text>
           </View>
         </TouchableOpacity>
       </KeyboardAvoidingView>
+      <ScrollView style={styles.itemsScroll}>
+        <View style={styles.items}>
+          {/* task here */}
+          {todoList.map((item, index) => {
+            return (
+              <TouchableOpacity key={index} 
+              onLongPress={() => deleteNote(index)}
+              onPress={() =>viewDoc(index)}
+              >
+                <NoteItem Text={item}></NoteItem>
+              </TouchableOpacity>
+            );
+          })}
+        </View>
+      </ScrollView>
+      {/* typing to add task */}
+      
     </View>
   );
 }
@@ -97,14 +108,18 @@ const styles = StyleSheet.create({
   },
   items: {
     marginTop: 30,
+    flex: 1,
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-around",
   },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
   },
   writeTaskWrapper: {
-    position: "absolute",
-    bottom: "-110%",
+    position: "relative",
+    top: 0,
     width: "100%",
     flexDirection: "row",
     justifyContent: "space-between",
@@ -123,14 +138,14 @@ const styles = StyleSheet.create({
   addWrapper: {
     width: 60,
     height: 60,
-    backgroundColor: "limegreen",
+    backgroundColor: "white",
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 5,
     borderWidth: 1,
   },
-  addText: {
-    color:'white',
-    fontSize:30
-  },
+  addText: {},
+  itemsScroll:{
+      flexGrow:1
+  }
 });
