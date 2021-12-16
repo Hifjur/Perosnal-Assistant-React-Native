@@ -3,6 +3,7 @@ import React from "react";
 import { StyleSheet,Text, View } from "react-native";
 import { NativeRouter, Route, Routes } from "react-router-native";
 import Home from "./Conponent/Home/Home";
+import Login from "./Conponent/Login/Login";
 import Task from "./Conponent/Task";
 import TodoList from "./Conponent/TodoList";
 
@@ -12,8 +13,8 @@ export default function App() {
     <View style={styles.container}>
       <NativeRouter>
         <Routes>
-          <Route path="/" element={<Home/>}></Route>
-        
+          <Route path="/home" element={<Home/>}></Route>
+          <Route path="/" element={<Login/>}></Route>
           <Route path="/todoList" element={<TodoList></TodoList>}></Route>
         </Routes>
       </NativeRouter>

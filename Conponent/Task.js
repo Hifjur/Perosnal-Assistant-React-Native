@@ -36,11 +36,11 @@ const styles = StyleSheet.create({
   },
   itemText: {
     padding: 20,
-    fontSize: 22,
+    fontSize: 16,
   },
   buttons: {
       width:20,
-      height: 20,
+      height: 15,
       borderColor:'#2ABB01',
       borderWidth:2,
       borderRadius:5,
