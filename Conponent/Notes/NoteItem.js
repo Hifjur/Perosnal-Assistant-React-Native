@@ -1,11 +1,16 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { Link } from "react-router-native";
 
 export default function NoteItem(props) {
   return (
     <View style={styles.item}>
       <View style={styles.itemLeft}>
-        <Text style={styles.itemText}>{props.Text}...</Text>
+        <Text style={styles.itemText}>{props.Text.title}</Text>
+        <Text style={styles.itemPreview}>{props.Text.note}</Text>
+        <Link to={`/shownote/${props.Text._id}`}>
+            <Text style={styles.button}>Show more</Text>
+          </Link>
       </View>
     </View>
   );
@@ -18,7 +23,7 @@ const styles = StyleSheet.create({
     margin: 5,
     
     
-    height:150,
+    height:100,
     maxWidth:100
   },
   
@@ -31,7 +36,7 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   itemText: {
-    padding: 20,
+    padding: 4,
     fontSize: 16,
   },
   itemLeft: {
@@ -39,5 +44,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flexWrap: "wrap",
   },
-  
+  button:{
+    fontSize:10,
+    color:'gray',
+    padding:10
+  },
+  itemPreview:{
+    fontSize:8,
+    height:14
+  }
 });

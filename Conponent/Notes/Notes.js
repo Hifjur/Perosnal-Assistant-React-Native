@@ -17,9 +17,10 @@ import NoteItem from "./NoteItem";
 
 export default function Notes() {
   const [note, setNote] = useState();
+  const [title, setTitle] = useState();
   const [noteList, setNoteList] = useState([]);
   const [update, setUpdate] = useState(false);
-  const {user} = useAuth();
+  const { user } = useAuth();
   // load notes
   useEffect(() => {
     fetch(`https://cryptic-falls-87009.herokuapp.com/notes?email=${user.email}`)
@@ -36,7 +37,7 @@ export default function Notes() {
   const addNotesHandler = () => {
     setUpdate(false);
     Keyboard.dismiss();
-    const data = {note, name:user.displayName, email:user.email};
+    const data = { note,title, name: user.displayName, email: user.email };
     console.log(data);
     fetch(`https://cryptic-falls-87009.herokuapp.com/notes`, {
       method: "POST",
@@ -55,7 +56,7 @@ export default function Notes() {
       });
     setNote(null);
   };
-  //  delete note 
+  //  delete note
   const deleteNote = (id) => {
     setUpdate(false);
     Alert.alert(
@@ -79,8 +80,8 @@ export default function Notes() {
                   Alert.alert("Success", "Note Deleted", [
                     { text: "OK", onPress: () => setUpdate(true) },
                   ]);
-                }else{
-                  console.log('nope')
+                } else {
+                  console.log("nope");
                 }
               });
           },
@@ -88,10 +89,6 @@ export default function Notes() {
       ]
     );
   };
-
-  const viewDoc =(index) =>{
-    
-  }
 
   return (
     <View style={styles.taskWrapper}>
@@ -105,15 +102,21 @@ export default function Notes() {
         behavior={Platform.OS === "android" ? "padding" : "height"}
         style={styles.writeTaskWrapper}
       >
-        <TextInput
-          style={styles.input}
-          placeholder={"Type here!"}
-          value={note}
-          onChangeText={(text) => setNote(text)}
-        ></TextInput>
-        <TouchableOpacity 
-        onPress={addNotesHandler}
-        >
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.input}
+            placeholder={"Title"}
+            value={title}
+            onChangeText={(text) => setTitle(text)}
+          ></TextInput>
+          <TextInput
+            style={styles.input}
+            placeholder={"Type here!"}
+            value={note}
+            onChangeText={(text) => setNote(text)}
+          ></TextInput>
+        </View>
+        <TouchableOpacity onPress={addNotesHandler}>
           <View style={styles.addWrapper}>
             <Text style={styles.addText}>+</Text>
           </View>
@@ -124,18 +127,17 @@ export default function Notes() {
           {/* task here */}
           {noteList.map((item) => {
             return (
-              <TouchableOpacity key={item._id} 
-              onLongPress={() => deleteNote(item._id)}
-              onPress={() =>viewDoc(item._id)}
+              <TouchableOpacity
+                key={item._id}
+                onLongPress={() => deleteNote(item._id)}
               >
-                <NoteItem Text={item.note}></NoteItem>
+                <NoteItem Text={item}></NoteItem>
               </TouchableOpacity>
             );
           })}
         </View>
       </ScrollView>
       {/* typing to add task */}
-      
     </View>
   );
 }
@@ -170,8 +172,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   input: {
-    paddingVertical: 20,
-    paddingHorizontal: 20,
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+    margin:4,
     backgroundColor: "#FFF",
     borderRadius: 5,
     borderColor: "#C0C0C0",
@@ -189,7 +192,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   addText: {},
-  itemsScroll:{
-      flexGrow:1
+  itemsScroll: {
+    flexGrow: 1,
+  },
+  inputContainer:{
+    flex:1
   }
 });

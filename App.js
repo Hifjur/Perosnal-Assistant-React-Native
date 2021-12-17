@@ -8,6 +8,7 @@ import Home from "./Conponent/Home/Home";
 import Login from "./Conponent/Login/Login";
 import Register from "./Conponent/Login/Register";
 import Notes from "./Conponent/Notes/Notes";
+import ShowNotes from "./Conponent/Notes/ShowNotes";
 import PasswordManager from "./Conponent/PasswordManager/PasswordManager";
 import Task from "./Conponent/Task";
 import TodoList from "./Conponent/TodoList";
@@ -28,6 +29,7 @@ export default function App() {
               element={<PasswordManager />}
             ></Route>
             <Route path="/notes" element={<Notes />}></Route>
+            <Route path="/shownote/:id" element={<ShowNotes />}></Route>
           </Routes>
         </NativeRouter>
       </AuthProvider>
@@ -39,6 +41,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#091334",
-    //backgroundColor: "#7993EB",
+    backgroundColor: "#7993EB",
   },
 });

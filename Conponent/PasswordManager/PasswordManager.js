@@ -12,18 +12,41 @@ import {
 } from "react-native";
 import { Link } from "react-router-native";
 
+import useAuth from "../Hooks/useAuth";
+
 import PasswordItem from "./PasswordItem";
 
 export default function PasswordManager() {
-  const [password, setPassword] = useState();
+  const {user} = useAuth();
+  const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [passwordVault, setPasswordVault] = useState([]);
-
+  const [update, setUpdate] = useState(false);
+  
   const addNewEntry = () => {
     Keyboard.dismiss();
-    setPasswordVault([...passwordVault, password]);
-    setPassword(null);
+    setUpdate(false);
+    
+    console.log(data);
+    //sending to db
+    const data = {password, name, email, userEmail:user.email};
+    fetch(`https://cryptic-falls-87009.herokuapp.com/password`, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.insertedId) {
+          Alert.alert("Success", "Password saved", [
+            { text: "OK", onPress: () => setUpdate(true) },
+          ]);
+        }
+      });
+    setPassword("");
   };
   //  delete task when completed
   const RemovePassword = (index) => {
