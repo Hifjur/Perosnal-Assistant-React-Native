@@ -51,7 +51,7 @@ export default function PasswordManager() {
     <View style={styles.taskWrapper}>
       <View style={styles.header}>
         <Text style={styles.sectionTitle}>Password Manager</Text>
-        <Link to="/">
+        <Link to="/home">
           <Text style={styles.sectionTitle}>back</Text>
         </Link>
       </View>

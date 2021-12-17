@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-//import {registerUser} from '../Hooks/useFirebase';
+
 import {
   KeyboardAvoidingView,
   StyleSheet,
@@ -10,25 +10,32 @@ import {
   View,
 } from "react-native";
 import { Link } from "react-router-native";
+
 import useAuth from "../Hooks/useAuth";
 
-const Login = () => {
-  const { loginUser, user } = useAuth();
 
+
+const Register = () => {
+  const {registerUser}=useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  const handleLogin = () => {
-    loginUser(email, password);
-    };
- 
+  const [name, setName] = useState("");
+  const handleRegister = () => {
+    registerUser(name,email, password)
+  };
 
   return (
-    <KeyboardAvoidingView style={styles.container}>
+    <KeyboardAvoidingView style={styles.container} >
       <Text style={styles.header}>Personal Assistant</Text>
       {user.email? <Link to="/home">
             <Text style={styles.nav}>Start Using</Text>
           </Link>:<View style={styles.inputsContainer}>
+        <TextInput
+          placeholder="name"
+          value={name}
+          onChangeText={(text) => setName(text)}
+          style={styles.input}
+        />
         <TextInput
           placeholder="Email"
           value={email}
@@ -44,25 +51,23 @@ const Login = () => {
         />
         <View style={styles.buttonContianer}>
           <TouchableOpacity
-            onPress={() => {
-              handleLogin();
-            }}
-            style={styles.button}
+            onPress={handleRegister}
+            style={styles.buttonRegister}
           >
-            <Text style={styles.buttonText}>Login</Text>
+            <Text style={styles.buttonOutlineText}>Register</Text>
           </TouchableOpacity>
-
-          <Link to="/register">
-            <Text style={styles.nav}>Create New Account</Text>
+          
+          <Link to="/login">
+            <Text style={styles.nav}>Already have an account?</Text>
           </Link>
-           
+          
         </View>
       </View>}
     </KeyboardAvoidingView>
   );
 };
 
-export default Login;
+export default Register;
 
 const styles = StyleSheet.create({
   container: {
@@ -118,8 +123,8 @@ const styles = StyleSheet.create({
     fontWeight: "700",
   },
   nav: {
-    padding: 10,
-    color: "white",
-    fontSize: 20,
-  },
+    padding:10,
+    color:'white',
+    fontSize:20,
+  }
 });

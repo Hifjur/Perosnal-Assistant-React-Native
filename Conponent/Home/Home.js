@@ -6,13 +6,28 @@ import {
   StatusBar,
   Platform,
   View,
+  TouchableOpacity,
 } from "react-native";
 import { Link } from "react-router-native";
+import useAuth from "../Hooks/useAuth";
+import Login from "../Login/Login";
 
-export default function Home() {
+export default function Home({ history }) {
+  const { user, logout } = useAuth();
   return (
     <SafeAreaView style={styles.AndroidSafeArea}>
-      <Text style={styles.head}>Hi Hifjur!</Text>
+      <View style={styles.header}>
+        <Text style={styles.head}>Hi {user.displayName}!</Text>
+        <TouchableOpacity
+          onPress={() => {
+            logout();
+            
+          }}
+          style={styles.button}
+        >
+          <Text style={styles.buttonText}>Logout</Text>
+        </TouchableOpacity>
+      </View>
       <View style={styles.menu}>
         <View style={styles.tiles}>
           <Link to="/todoList">
@@ -46,14 +61,14 @@ const styles = StyleSheet.create({
   nav: {
     color: "white",
     width: "100%",
-    height:120,
+    height: 120,
     textAlign: "center",
     padding: "18%",
     backgroundColor: "limegreen",
     margin: 5,
     borderRadius: 5,
-    fontSize:15,
-    fontWeight:'bold'
+    fontSize: 15,
+    fontWeight: "bold",
   },
   tiles: {
     flex: 1,
@@ -69,8 +84,19 @@ const styles = StyleSheet.create({
   head: {
     color: "white",
     textAlign: "center",
-    marginTop:50,
-    fontSize:30,
-    fontWeight:'bold'
+    marginTop: 50,
+    fontSize: 30,
+    fontWeight: "bold",
   },
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+  },
+  buttonText: {
+    backgroundColor: "#DF7000",
+    padding: 8,
+    color: "white",
+    borderBottomEndRadius: 5,
+  },
+  
 });

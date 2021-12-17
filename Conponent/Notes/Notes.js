@@ -10,7 +10,7 @@ import {
   Alert,
   ScrollView,
 } from "react-native";
-import { keyboardProps } from "react-native-web/dist/cjs/modules/forwardedProps";
+
 import { Link } from "react-router-native";
 import NoteItem from "./NoteItem";
 
@@ -96,7 +96,7 @@ export default function Notes() {
     <View style={styles.taskWrapper}>
       <View style={styles.header}>
         <Text style={styles.sectionTitle}>Notes</Text>
-        <Link to="/">
+        <Link to="/home">
           <Text style={styles.sectionTitle}>back</Text>
         </Link>
       </View>

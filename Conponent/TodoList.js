@@ -9,6 +9,7 @@ import {
   Keyboard,
   Alert,
   ScrollView,
+  SafeAreaView
 } from "react-native";
 
 import { Link } from "react-router-native";
@@ -90,16 +91,16 @@ export default function TodoList() {
   };
 
   return (
-    <View style={styles.taskWrapper}>
+    <SafeAreaView style={styles.taskWrapper}>
       <View style={styles.header}>
         <Text style={styles.sectionTitle}>Todays Task</Text>
-        <Link to="/">
+        <Link to="/home">
           <Text style={styles.sectionTitle}>back</Text>
         </Link>
       </View>
       {/* typing to add task */}
       <KeyboardAvoidingView
-        behavior={Platform.OS === "android" ? "padding" : "height"}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={styles.writeTaskWrapper}
       >
         <TextInput
@@ -130,13 +131,14 @@ export default function TodoList() {
           })}
         </View>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 }
 const styles = StyleSheet.create({
   taskWrapper: {
     padding: 66,
     paddingHorizontal: 20,
+    height:'100%'
   },
   sectionTitle: {
     color: "white",
@@ -145,7 +147,8 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   items: {
-    marginTop: 30,
+    marginTop: 20,
+    
   },
   itemScroll: {
     flexGrow: 1,
