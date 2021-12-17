@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     margin: 5,
     
     
-    height:100,
+   
     maxWidth:100
   },
   

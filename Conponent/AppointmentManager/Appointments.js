@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -14,24 +14,36 @@ import { Link } from "react-router-native";
 
 import useAuth from "../Hooks/useAuth";
 
-import PasswordItem from "./PasswordItem";
+import AppointmentItem from "./AppointmentItem";
 
-export default function PasswordManager() {
+export default function Appointments() {
   const {user} = useAuth();
-  const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [passwordVault, setPasswordVault] = useState([]);
+  const [appointments, setAppointments] = useState("");
+  const [time, setTime] = useState("");
+  const [date, setDate] = useState("");
+  const [allAppointments, setAllAppointments] = useState([]);
   const [update, setUpdate] = useState(false);
   
+  //load data from db
+  useEffect(() => {
+    fetch(`https://cryptic-falls-87009.herokuapp.com/appointment?email=${user.email}`)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        setAllAppointments(data);
+      })
+      .catch((error) => {
+        alert(error.message);
+      });
+  }, [update]);
   const addNewEntry = () => {
     Keyboard.dismiss();
     setUpdate(false);
     
     console.log(data);
     //sending to db
-    const data = {password, name, email, userEmail:user.email};
-    fetch(`https://cryptic-falls-87009.herokuapp.com/password`, {
+    const data = {appointments, time, date, email:user.email};
+    fetch(`https://cryptic-falls-87009.herokuapp.com/appointment`, {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -46,7 +58,9 @@ export default function PasswordManager() {
           ]);
         }
       });
-    setPassword("");
+    setAppointments("");
+    setDate("");
+    setTime("");
   };
   //  delete task when completed
   const RemovePassword = (index) => {
@@ -61,9 +75,9 @@ export default function PasswordManager() {
         {
           text: "Yes",
           onPress: () => {
-            let passwordVaultCopy = [...passwordVault];
+            let passwordVaultCopy = [...allAppointments];
             passwordVaultCopy.splice(index, 1);
-            setPasswordVault(passwordVaultCopy);
+            setAllAppointments(passwordVaultCopy);
           },
         },
       ]
@@ -73,7 +87,7 @@ export default function PasswordManager() {
   return (
     <View style={styles.taskWrapper}>
       <View style={styles.header}>
-        <Text style={styles.sectionTitle}>Password Manager</Text>
+        <Text style={styles.sectionTitle}>Appointment Manager</Text>
         <Link to="/home">
           <Text style={styles.sectionTitle}>back</Text>
         </Link>
@@ -86,21 +100,21 @@ export default function PasswordManager() {
         <View style={styles.inputsContainer}>
           <TextInput
             style={styles.input}
-            placeholder={"Account Name"}
-            value={name}
-            onChangeText={(text) => setName(text)}
+            placeholder={"Set Time"}
+            value={time}
+            onChangeText={(text) => setTime(text)}
           ></TextInput>
           <TextInput
             style={styles.input}
-            placeholder={"email"}
-            value={email}
-            onChangeText={(text) => setEmail(text)}
+            placeholder={"Set Date"}
+            value={date}
+            onChangeText={(text) => setDate(text)}
           ></TextInput>
           <TextInput
             style={styles.input}
-            placeholder={"password"}
-            value={password}
-            onChangeText={(text) => setPassword(text)}
+            placeholder={"Add Appointment Info"}
+            value={appointments}
+            onChangeText={(text) => setAppointments(text)}
           ></TextInput>
           <TouchableOpacity onPress={addNewEntry}>
           <View style={styles.addWrapper}>
@@ -113,10 +127,10 @@ export default function PasswordManager() {
         <View style={styles.items}>
           {/* task here */}
 
-          {passwordVault.map((item, index) => {
+          {allAppointments.map((item) => {
             return (
-              <TouchableOpacity key={index} onLongPress={() => RemovePassword(index)}>
-                <PasswordItem Text={item}></PasswordItem>
+              <TouchableOpacity key={item._id} onLongPress={() => RemovePassword(item._id)}>
+                <AppointmentItem Text={item}></AppointmentItem>
               </TouchableOpacity>
             );
           })}
@@ -129,6 +143,7 @@ const styles = StyleSheet.create({
   taskWrapper: {
     padding: 66,
     paddingHorizontal: 20,
+    height:'100%'
   },
   sectionTitle: {
     color: "white",
@@ -155,8 +170,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   input: {
-    paddingVertical: 20,
-    paddingHorizontal: 20,
+    paddingVertical: 10,
+    paddingHorizontal: 10,
     backgroundColor: "#FFF",
     borderRadius: 5,
     borderColor: "#C0C0C0",

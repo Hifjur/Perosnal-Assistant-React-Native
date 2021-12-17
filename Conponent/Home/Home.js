@@ -33,16 +33,16 @@ export default function Home({ history }) {
           <Link to="/todoList">
             <Text style={styles.nav}>Todo List</Text>
           </Link>
-          <Link to="/passwordManager">
-            <Text style={styles.nav}>Password Manager</Text>
+          <Link to="/appointments">
+            <Text style={styles.nav}>Appointment Manager</Text>
           </Link>
         </View>
         <View style={styles.tiles}>
           <Link to="/notes">
             <Text style={styles.nav}>Notes</Text>
           </Link>
-          <Link to="/todoList">
-            <Text style={styles.nav}>Todo List</Text>
+          <Link to="/jokeGen">
+            <Text style={styles.nav}>Get A Random Joke</Text>
           </Link>
           {/* <Link to="/login">
             <Text style={styles.nav}>login</Text>
@@ -72,6 +72,7 @@ const styles = StyleSheet.create({
   },
   tiles: {
     flex: 1,
+    
     margin: 5,
   },
   menu: {

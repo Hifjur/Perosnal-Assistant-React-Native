@@ -145,6 +145,7 @@ const styles = StyleSheet.create({
   taskWrapper: {
     padding: 66,
     paddingHorizontal: 20,
+    height:'100%'
   },
   sectionTitle: {
     color: "white",
