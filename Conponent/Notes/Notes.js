@@ -12,16 +12,17 @@ import {
 } from "react-native";
 
 import { Link } from "react-router-native";
+import useAuth from "../Hooks/useAuth";
 import NoteItem from "./NoteItem";
 
 export default function Notes() {
   const [note, setNote] = useState();
   const [noteList, setNoteList] = useState([]);
   const [update, setUpdate] = useState(false);
-
+  const {user} = useAuth();
   // load notes
   useEffect(() => {
-    fetch("https://cryptic-falls-87009.herokuapp.com/notes")
+    fetch(`https://cryptic-falls-87009.herokuapp.com/notes?email=${user.email}`)
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
@@ -35,9 +36,9 @@ export default function Notes() {
   const addNotesHandler = () => {
     setUpdate(false);
     Keyboard.dismiss();
-    const data = {note}
+    const data = {note, name:user.displayName, email:user.email};
     console.log(data);
-    fetch("https://cryptic-falls-87009.herokuapp.com/notes", {
+    fetch(`https://cryptic-falls-87009.herokuapp.com/notes`, {
       method: "POST",
       headers: {
         "content-type": "application/json",

@@ -44,9 +44,9 @@ export default function Home({ history }) {
           <Link to="/todoList">
             <Text style={styles.nav}>Todo List</Text>
           </Link>
-          <Link to="/login">
+          {/* <Link to="/login">
             <Text style={styles.nav}>login</Text>
-          </Link>
+          </Link> */}
         </View>
       </View>
     </SafeAreaView>

@@ -16,7 +16,7 @@ import useAuth from "../Hooks/useAuth";
 
 
 const Register = () => {
-  const {registerUser}=useAuth();
+  const {registerUser, user}=useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");

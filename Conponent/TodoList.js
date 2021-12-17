@@ -13,16 +13,18 @@ import {
 } from "react-native";
 
 import { Link } from "react-router-native";
+import useAuth from "./Hooks/useAuth";
 import Task from "./Task";
 
 export default function TodoList() {
+  const {user}= useAuth();
   const [task, setTask] = useState("");
   const [todoList, setToDoList] = useState([]);
   const [update, setUpdate] = useState(false);
 
   // load todolist
   useEffect(() => {
-    fetch("https://cryptic-falls-87009.herokuapp.com/todo")
+    fetch(`https://cryptic-falls-87009.herokuapp.com/todo?email=${user.email}`)
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
@@ -36,7 +38,7 @@ export default function TodoList() {
   const addToDoHandler = () => {
     setUpdate(false)
     Keyboard.dismiss();
-    const data = {task}
+    const data = {task, name:user.displayName, email:user.email}
     console.log(data);
     fetch("https://cryptic-falls-87009.herokuapp.com/todo", {
       method: "POST",
