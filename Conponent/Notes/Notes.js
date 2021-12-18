@@ -55,6 +55,7 @@ export default function Notes() {
         }
       });
     setNote(null);
+    setTitle(null);
   };
   //  delete note
   const deleteNote = (id) => {
@@ -113,6 +114,8 @@ export default function Notes() {
             style={styles.input}
             placeholder={"Type here!"}
             value={note}
+            multiline={true}
+            numberOfLines={3}
             onChangeText={(text) => setNote(text)}
           ></TextInput>
         </View>

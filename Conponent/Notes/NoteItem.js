@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     
     
    
-    maxWidth:100
+    maxWidth:150
   },
   
   round: {

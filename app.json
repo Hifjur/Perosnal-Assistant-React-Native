@@ -28,6 +28,6 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "description": ""
+    "description": "A personal Assitant like app with Todo list, news search, notes, Appointment management, A jokes generator"
   }
 }

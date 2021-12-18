@@ -13,6 +13,7 @@ import Appointments from "./Conponent/AppointmentManager/Appointments";
 import Task from "./Conponent/Task";
 import TodoList from "./Conponent/TodoList";
 import JokeGen from "./Conponent/JokeGen/JokeGen";
+import NewsFlash from "./Conponent/NewsFlash/NewsFlash";
 
 export default function App() {
   return (
@@ -27,6 +28,7 @@ export default function App() {
             <Route path="/todoList" element={<TodoList></TodoList>}></Route>
             <Route path="/appointments" element={<Appointments />}></Route>
             <Route path="/jokeGen" element={<JokeGen/>}></Route>
+            <Route path="/news" element={<NewsFlash/>}></Route>
             <Route path="/notes" element={<Notes />}></Route>
             <Route path="/shownote/:id" element={<ShowNotes />}></Route>
           </Routes>

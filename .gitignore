@@ -16,3 +16,4 @@ web-build/
 
 Firebase.config.js
 .env.local
+apiKey.js
